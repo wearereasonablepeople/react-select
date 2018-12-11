@@ -3,6 +3,7 @@
 import React, { Component, type ElementRef, type Node } from 'react';
 
 import memoizeOne from 'memoize-one';
+import memoize from '@emotion/memoize';
 import createEmotion from 'create-emotion';
 import { MenuPlacer } from './components/Menu';
 import isEqual from './internal/react-fast-compare';
@@ -372,7 +373,8 @@ export default class Select extends Component<Props, State> {
     const selectValue = cleanValue(value);
     const menuOptions = this.buildMenuOptions(props, selectValue);
 
-    this.emotion = createEmotion(props.nonce ? { nonce: props.nonce } : {});
+    this.createEmotion = memoize(createEmotion);
+    this.emotion = this.createEmotion(props.nonce ? { nonce: props.nonce } : {});
 
     this.state.menuOptions = menuOptions;
     this.state.selectValue = selectValue;
